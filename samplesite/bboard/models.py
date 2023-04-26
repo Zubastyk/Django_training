@@ -1,6 +1,22 @@
 from django.db import models
+from django.contrib.auth.models import User
+
+
+class AdvUser(models.Model):
+    is_activated = models.BooleanField(default=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
 
 class Bb(models.Model):
+    KINDS = (
+        ('Купля-продажа', (
+            ('b', 'Куплю'),
+            ('s', 'Продам'),
+        )),
+        ('Обмен', (
+        ('c', 'Обменяю'),
+        ))
+    )
+    kind = models.CharField(max_length=1, choices=KINDS, default='s')
     title = models.CharField(max_length=50, verbose_name='Товар')
     content = models.TextField(null=True, blank=True, verbose_name='Описание')
     price = models.DecimalField(null=True, blank=True, verbose_name='Цена', max_digits=10, decimal_places=2)
