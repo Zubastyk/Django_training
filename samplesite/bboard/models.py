@@ -33,7 +33,15 @@ class Bb(models.Model):
     rubric = models.ForeignKey('Rubric', null=True,
                                on_delete=models.PROTECT, verbose_name='Рубрика')
     
-    
+    # Функциональное поле
+    def title_and_price(self):
+        if self.price:
+            return '%s (%.2f)' % (self.title, self.price)
+        else:
+            return self.title
+    title_and_price.short_description = 'Название и цена'
+
+
     class Meta:
         verbose_name_plural = 'Объявления'
         verbose_name = 'Объявление'
