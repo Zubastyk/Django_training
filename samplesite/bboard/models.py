@@ -6,6 +6,15 @@ class AdvUser(models.Model):
     is_activated = models.BooleanField(default=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
+# модель ведомая (отдельные детали)
+class Spare(models.Model):
+    name = models.CharField(max_length=30)
+# модель ведущая (готовые машины)    
+class Machine(models.Model):
+    name = models.CharField(max_length=30)
+    spares = models.ManyToManyField(Spare)
+    
+
 class Bb(models.Model):
     KINDS = (
         ('Купля-продажа', (
