@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from django.core import validators
 
 class AdvUser(models.Model):
     is_activated = models.BooleanField(default=True)
@@ -26,7 +26,9 @@ class Bb(models.Model):
         ))
     )
     kind = models.CharField(max_length=1, choices=KINDS, default='s')
-    title = models.CharField(max_length=50, verbose_name='Товар')
+    title = models.CharField(max_length=50, verbose_name='Товар',
+                             validators=[validators.RegexValidator(regex='^.{4,}$')],
+                             error_messages={'invalid': 'Неправильное название товара'})
     content = models.TextField(null=True, blank=True, verbose_name='Описание')
     price = models.DecimalField(null=True, blank=True, verbose_name='Цена', max_digits=10, decimal_places=2)
     published = models.DateTimeField(auto_now_add=True, db_index=True, verbose_name='Опубликовано')
