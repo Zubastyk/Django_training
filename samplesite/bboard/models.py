@@ -24,8 +24,8 @@ class MinMaxValueValidator:
         
     def __call__(self, val):
         if val < self.min_value or val > self.max_value:
-            raise ValidationError('Введеное число должно ' +\ 
-                                  'находиться в диапазоне от %(min)s до %(max)s',
+            raise ValidationError('Введеное число должно ' +\
+                                'находиться в диапазоне от %(min)s до %(max)s',
                                   code='out_of_range',
                                   params={'min': self.min_value, 'max': self.max_value})
           
