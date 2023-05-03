@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core import validators
+from django.core.exceptions import ValidationError
+
 
 class AdvUser(models.Model):
     is_activated = models.BooleanField(default=True)
@@ -13,7 +15,20 @@ class Spare(models.Model):
 class Machine(models.Model):
     name = models.CharField(max_length=30)
     spares = models.ManyToManyField(Spare)
-    
+
+# Класс-валидатор(стр. 116)
+class MinMaxValueValidator:  
+    def __init__(self, min_value, max_value):
+        self.min_value = min_value
+        self.max_value = max_value
+        
+    def __call__(self, val):
+        if val < self.min_value or val > self.max_value:
+            raise ValidationError('Введеное число должно ' +\ 
+                                  'находиться в диапазоне от %(min)s до %(max)s',
+                                  code='out_of_range',
+                                  params={'min': self.min_value, 'max': self.max_value})
+          
 
 class Bb(models.Model):
     KINDS = (
@@ -43,6 +58,17 @@ class Bb(models.Model):
             return self.title
     title_and_price.short_description = 'Название и цена'
 
+    def clean(self):
+        errors = {}
+        if not self.content:
+            errors['content'] = ValidationError('Укажите описание ' +\
+                                                'продаваемого товара')
+        if self.price and self.price < 0:
+            errors['price'] = ValidationError('Укажите ' +\
+                                    'неотрицательное значение цены')
+        if errors:
+            raise ValidationError(errors)
+    
 
     class Meta:
         verbose_name_plural = 'Объявления'
