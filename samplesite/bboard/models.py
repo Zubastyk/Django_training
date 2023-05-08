@@ -3,11 +3,12 @@ from django.contrib.auth.models import User
 from django.core import validators
 from django.core.exceptions import ValidationError
 
-
+# Связь один с одним
 class AdvUser(models.Model):
     is_activated = models.BooleanField(default=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
+# Связь многие со многими
 # модель ведомая (отдельные детали)
 class Spare(models.Model):
     name = models.CharField(max_length=30)
@@ -31,6 +32,7 @@ class MinMaxValueValidator:
           
 
 class Bb(models.Model):
+    # Поле со списком 
     KINDS = (
         ('Купля-продажа', (
             ('b', 'Куплю'),
@@ -42,7 +44,7 @@ class Bb(models.Model):
     )
     kind = models.CharField(max_length=1, choices=KINDS, default='s')
     title = models.CharField(max_length=50, verbose_name='Товар',
-                             validators=[validators.RegexValidator(regex='^.{4,}$')],
+                             validators=[validators.RegexValidator(regex='^.{3,}$')],
                              error_messages={'invalid': 'Неправильное название товара'})
     content = models.TextField(null=True, blank=True, verbose_name='Описание')
     price = models.DecimalField(null=True, blank=True, verbose_name='Цена', max_digits=10, decimal_places=2)
@@ -86,3 +88,13 @@ class Rubric(models.Model):
         verbose_name_plural = 'Рубрики'
         verbose_name = 'Рубрика'
         ordering = ['name']
+
+
+# Перечисления, содержащие внутренние значения
+class Measure(models.Model):
+    class Measurements(float, models.Choices):
+        МETERS = 1.0, 'Метры'
+        FEET = 0.3048, 'Футы'
+        YARDS = 0.9144, 'Ярды'
+        
+    measurement = models.FloatField(choices=Measurements.choices)
