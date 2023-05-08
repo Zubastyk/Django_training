@@ -27,30 +27,16 @@ def by_rubric(request, rubric_id):
     return render(request, 'by_rubric.html', context)
 
 
-#class BbCreateView(CreateView):
-#    template_name = 'create.html'
-#   form_class = BbForm
-#    success_url = reverse_lazy('index')
-#    
-#    def get_context_data(self, **kwargs):
-#        context = super().get_context_data(**kwargs)
-#        context['rubrics'] = Rubric.objects.all()
-#        return context
+class BbCreateView(CreateView):
+    template_name = 'create.html'
+    form_class = BbForm
+    success_url = reverse_lazy('index')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['rubrics'] = Rubric.objects.all()
+        return context
 
 
-# Контроллер-функция вывода страницы добавления объявления и сохраненеия данных в базе    
-def add_and_save(request):
-    if request.method == 'POST':
-        bbf = BbForm(request.POST)
-        if bbf.is_valid():
-            bbf.save()
-            return HttpResponseRedirect(reverse('bboard:by_rubric',
-                    kwargs={'rubric_id': bbf.cleaned_data['rubric'].pk}))
-        else:
-            context = {'form': bbf}
-            return render(request, 'bboard/create.html', context)
-    else:
-        bbf = BbForm()
-        context = {'form': bbf}
-        return HttpResponseRedirect(reverse('bboard:by_rubric'))
+
         
