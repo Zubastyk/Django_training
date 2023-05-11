@@ -1,10 +1,10 @@
+from typing import Any, Dict
 from django.shortcuts import render
 from django.views.generic.edit import CreateView
-from django.http import HttpResponseRedirect
+from django.views.generic.detail import DetailView
 from django.urls import reverse_lazy, reverse
 
-from .models import Bb
-from .models import Rubric
+from .models import Bb, Rubric
 from .forms import BbForm
 
 
@@ -38,5 +38,11 @@ class BbCreateView(CreateView):
         return context
 
 
-
-        
+#Стандартный контроллер-класс, который компактно позволяет писать
+class BbDetailView(DetailView):
+    model = Bb 
+    
+    def get_context_data(self, **kwargs): 
+        context = super().get_context_data(**kwargs)
+        context['rubrics'] = Rubric.objects.all()
+        return context
