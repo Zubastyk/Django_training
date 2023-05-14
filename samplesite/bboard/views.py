@@ -62,6 +62,5 @@ class BbByRubricView(ListView):
         context = super().get_context_data(**kwargs)
         context['rubrics'] = Rubric.objects.all()
         context['current_rubric'] = Rubric.objects.get(
-                                    pk=self.kwargs['rubric_id']
-        )
+                                    pk=self.kwargs['rubric_id'])
         return context

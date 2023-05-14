@@ -42,7 +42,7 @@ class Bb(models.Model):
         ('c', 'Обменяю'),
         ))
     )
-    kind = models.CharField(max_length=1, choices=KINDS, default='s')
+    kind = models.CharField(max_length=1, choices=KINDS, default='s', verbose_name='Категория объявления')
     title = models.CharField(max_length=50, verbose_name='Товар',
                              validators=[validators.RegexValidator(regex='^.{3,}$')],
                              error_messages={'invalid': 'Неправильное название товара'})
