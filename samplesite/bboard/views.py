@@ -7,7 +7,7 @@ from django.views.generic.edit import CreateView
 from django.views.generic.detail import DetailView
 from django.urls import reverse_lazy, reverse
 from django.views.generic.list import ListView
-from django.views.generic.edit import FormView, UpdateView
+from django.views.generic.edit import FormView, UpdateView, DeleteView
 
 from .models import Bb, Rubric
 from .forms import BbForm
@@ -91,6 +91,7 @@ class BbAddView(FormView):
         return reverse('bboard:by_rubric',
                        kwargs={'rubric_id': self.object.cleaned_data['rubric'].pk})
 
+
 # выполняет исправление объявления
 class BbEditView(UpdateView):
     model = Bb
@@ -98,6 +99,17 @@ class BbEditView(UpdateView):
     success_url = '/bboard/{rubric_id}'
     
     def get_context_data(self,  *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['rubrics'] = Rubric.objects.all()
+        return context
+
+
+#выполняет удаление объявления
+class BbDeleteView(DeleteView):
+    model = Bb
+    success_url = '/bboard/{rubric_id}'
+    
+    def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         context['rubrics'] = Rubric.objects.all()
         return context

@@ -10,6 +10,7 @@
     <p>{{bb.content}}</p>
     <p>{{bb.published|date:"d.m.Y H:i:s"}}</p>
     <p><a href="{% url 'bboard:correct' pk=bb.pk %}">{{ 'Исправить' }}</a></p>
+    <p><a href="{% url 'bboard:confirm_delete' pk=bb.pk %}">{{ 'Удалить' }}</a></p>
 </div>
 {% endfor %}
 {% endblock %}
