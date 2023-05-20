@@ -8,6 +8,7 @@ from django.views.generic.detail import DetailView
 from django.urls import reverse_lazy, reverse
 from django.views.generic.list import ListView
 from django.views.generic.edit import FormView, UpdateView, DeleteView
+from django.views.generic.dates import ArchiveIndexView
 
 from .models import Bb, Rubric
 from .forms import BbForm
@@ -113,3 +114,19 @@ class BbDeleteView(DeleteView):
         context = super().get_context_data(*args, **kwargs)
         context['rubrics'] = Rubric.objects.all()
         return context
+    
+# выводит хронологический список записей, отсортированных по убыванию значения заданного поля
+class BbIndexView(ArchiveIndexView):
+    model = Bb
+    date_field = 'published'
+    date_list_period = 'year'
+    template_name = 'bboard/index.html'
+    context_object_name = 'bbs'
+    allow_empty = True
+    
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['rubrics'] = Rubric.objects.all()
+        print('date_list')
+        return context 
+       

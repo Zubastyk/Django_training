@@ -60,6 +60,8 @@ class Bb(models.Model):
             return self.title
     title_and_price.short_description = 'Название и цена'
 
+
+# Валидация и отработка исключений
     def clean(self):
         errors = {}
         if not self.content:
@@ -87,7 +89,7 @@ class Rubric(models.Model):
     class Meta:
         verbose_name_plural = 'Рубрики'
         verbose_name = 'Рубрика'
-        ordering = ['name']
+       # ordering = ['name']
 
 
 # Перечисления, содержащие внутренние значения
