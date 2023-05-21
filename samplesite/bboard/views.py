@@ -58,17 +58,10 @@ class BbDetailView(DetailView):
 class BbByRubricView(ListView):
     template_name = 'bboard/by_rubric.html'
     context_object_name = 'bbs'
-   
-    
-    
-        
+     
     def get_queryset(self):
-        return Bb.objects.filter(rubric=self.kwargs['rubric_id'])
-    def get_ordering(self):
-            ordering =  Bb.objects.filter(rubric=self.kwargs['rubric_id'])('ordering', '-published')
-            # validate ordering here
-            print("сортировка")
-            return ordering
+        return Bb.objects.filter(rubric=self.kwargs['rubric_id']).order_by('-published')
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['rubrics'] = Rubric.objects.all()
