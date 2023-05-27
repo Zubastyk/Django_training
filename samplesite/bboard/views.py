@@ -9,6 +9,7 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic.list import ListView
 from django.views.generic.edit import FormView, UpdateView, DeleteView
 from django.views.generic.dates import ArchiveIndexView
+from django.core.paginator import Paginator
 
 from .models import Bb, Rubric
 from .forms import BbForm
@@ -123,6 +124,7 @@ class BbIndexView(ArchiveIndexView):
     template_name = 'bboard/index.html'
     context_object_name = 'bbs'
     allow_empty = True
+    paginate_by = 5
     
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
