@@ -7,6 +7,36 @@
     {{ d.year }}
     {% endfor %}
 </p>
+<div>
+    {% for object in object_list %}
+        <div>
+            <h3>{{ object.name }}</h3>
+            <p>
+                {{ object.text|truncatewords_html:10 }}
+            </p>
+        </div>
+    {% endfor %}
+    
+        <div class="example2-pagination">
+            {% for num in page_obj.paginator.page_range %}
+                {% if num < page_obj.number and num < 4 %}
+                    <a class="example2-pagination_link" href="?page={{ num }}">{{ num }}</a>
+                {% elif num < page_obj.number and num > page_obj.number|add:-4 %}
+                    <a class="example2-pagination_link" href="?page={{ num }}">{{ num }}</a>
+                {% elif num == page_obj.number %}
+                    <span class="example2-pagination_link example2-pagination_link__active">{{ num }}</span>
+                {% elif num > page_obj.number and num < page_obj.number|add:4 %}
+                    <a class="example2-pagination_link" href="?page={{ num }}">{{ num }}</a>
+                {% elif num > page_obj.number and num > page_obj.paginator.num_pages|add:-3 %}
+                    <a class="example2-pagination_link" href="?page={{ num }}">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+
+
+
 {% for bb in bbs%}
 <div>
     <h2><a href="{% url 'bboard:detail' pk=bb.pk %}">{{ bb.title }}</a></h2>
